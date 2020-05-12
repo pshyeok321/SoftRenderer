@@ -2,32 +2,23 @@
 
 #include <cassert>
 #include "Platform.h"
+#include <string> 
 
 struct Vector2
 {
 public:
 	// »ý¼ºÀÚ 
 	FORCEINLINE Vector2() = default;
-	FORCEINLINE explicit Vector2(int InX, int InY) : _X((float)InX), _Y((float)InY) { }
-	FORCEINLINE explicit Vector2(float InX, float InY) : _X(InX), _Y(InY) { }
+	FORCEINLINE explicit Vector2(int InX, int InY) : X((float)InX), Y((float)InY) { }
+	FORCEINLINE explicit Vector2(float InX, float InY) : X(InX), Y(InY) { }
 
 	// ¿¬»êÀÚ 
-	FORCEINLINE float operator[](int InIndex) const;
-	FORCEINLINE float& operator[](int InIndex);
-
-	// º¤ÅÍ °£ µ¡¼À ¿¬»êÀÚÀÇ ¿ª¿ø
+	FORCEINLINE float operator[](BYTE InIndex) const;
+	FORCEINLINE float& operator[](BYTE InIndex);
 	FORCEINLINE Vector2 operator-() const;
-
-	// °ö¼À ¿¬»êÀÚ
 	FORCEINLINE Vector2 operator*(float InScalar) const;
-
-	// ¿ª¿øÀÇ °ö¼À ¿¬»êÀÚ
 	FORCEINLINE Vector2 operator/(float InScalar) const;
-
-	// º¤ÅÍ°£ µ¡¼À ¿¬»êÀÚ
 	FORCEINLINE Vector2 operator+(const Vector2& InVector) const;
-
-	// ¿ª¿øÀÇ µ¡¼À ¿¬»êÀÚ
 	FORCEINLINE Vector2 operator-(const Vector2& InVector) const;
 	FORCEINLINE Vector2& operator*=(float InScale);
 	FORCEINLINE Vector2& operator/=(float InScale);
@@ -42,17 +33,19 @@ public:
 	FORCEINLINE float Max() const;
 	FORCEINLINE float Dot(const Vector2& InVector) const;
 
+	std::string ToString() const;
+
 	// Á¤Àû¸â¹öº¯¼ö 
 	static const Vector2 UnitX;
 	static const Vector2 UnitY;
-	static const Vector2 One;	
+	static const Vector2 One;
 	static const Vector2 Zero;
 	static const Vector2 Infinity;
 	static const Vector2 InfinityNeg;
 
 	// ¸â¹öº¯¼ö 
-	float _X = 0.f;
-	float _Y = 0.f;
+	float X = 0.f;
+	float Y = 0.f;
 };
 
 FORCEINLINE float Vector2::Size() const
@@ -62,7 +55,7 @@ FORCEINLINE float Vector2::Size() const
 
 FORCEINLINE float Vector2::SizeSquared() const
 {
-	return _X * _X + _Y * _Y;
+	return X * X + Y * Y;
 }
 
 FORCEINLINE Vector2 Vector2::Normalize() const
@@ -78,16 +71,16 @@ FORCEINLINE Vector2 Vector2::Normalize() const
 	}
 
 	float invLength = 1 / sqrtf(squareSum);
-	return Vector2(_X * invLength, _Y * invLength);
+	return Vector2(X * invLength, Y * invLength);
 }
 
-FORCEINLINE float Vector2::operator[](int InIndex) const
+FORCEINLINE float Vector2::operator[](BYTE InIndex) const
 {
 	assert(InIndex >= 0 && InIndex <= 1);
 	return ((float *)this)[InIndex];
 }
 
-FORCEINLINE float &Vector2::operator[](int InIndex)
+FORCEINLINE float &Vector2::operator[](BYTE InIndex)
 {
 	assert(InIndex >= 0 && InIndex <= 1);
 	return ((float *)this)[InIndex];
@@ -95,69 +88,69 @@ FORCEINLINE float &Vector2::operator[](int InIndex)
 
 FORCEINLINE Vector2 Vector2::operator-() const
 {
-	return Vector2(-_X, -_Y);
+	return Vector2(-X, -Y);
 }
 
 FORCEINLINE Vector2 Vector2::operator*(float InScalar) const
 {
-	return Vector2(_X * InScalar, _Y * InScalar);
+	return Vector2(X * InScalar, Y * InScalar);
 }
 
 FORCEINLINE Vector2 Vector2::operator/(float InScalar) const
 {
-	return Vector2(_X / InScalar, _Y / InScalar);
+	return Vector2(X / InScalar, Y / InScalar);
 }
 
 FORCEINLINE Vector2 Vector2::operator+(const Vector2& InVector) const
 {
-	return Vector2(_X + InVector._X, _Y + InVector._Y);
+	return Vector2(X + InVector.X, Y + InVector.Y);
 }
 
 FORCEINLINE Vector2 Vector2::operator-(const Vector2& InVector) const
 {
-	return Vector2(_X - InVector._X, _Y - InVector._Y);
+	return Vector2(X - InVector.X, Y - InVector.Y);
 }
 
 FORCEINLINE Vector2& Vector2::operator*=(float InScale)
 {
-	_X *= InScale;
-	_Y *= InScale;
+	X *= InScale;
+	Y *= InScale;
 	return *this;
 }
 
 FORCEINLINE Vector2& Vector2::operator/=(float InScale)
 {
-	_X /= InScale;
-	_Y /= InScale;
+	X /= InScale;
+	Y /= InScale;
 	return *this;
 }
 
 FORCEINLINE Vector2& Vector2::operator+=(const Vector2& InVector)
 {
-	_X += InVector._X;
-	_Y += InVector._Y;
+	X += InVector.X;
+	Y += InVector.Y;
 	return *this;
 }
 
 FORCEINLINE Vector2& Vector2::operator-=(const Vector2& InVector)
 {
-	_X -= InVector._X;
-	_Y -= InVector._Y;
+	X -= InVector.X;
+	Y -= InVector.Y;
 	return *this;
 }
 
 FORCEINLINE bool Vector2::EqualsInTolerance(const Vector2& InVector, float InTolerance) const
 {
-	return (Math::Abs(this->_X - InVector._X) <= InTolerance) &&
-		(Math::Abs(this->_Y - InVector._Y) < InTolerance);
+	return (Math::Abs(this->X - InVector.X) <= InTolerance) &&
+		(Math::Abs(this->Y - InVector.Y) < InTolerance);
 }
 
 FORCEINLINE float Vector2::Max() const
 {
-	return Math::Max(_X, _Y);
+	return Math::Max(X, Y);
 }
 
 FORCEINLINE float Vector2::Dot(const Vector2& InVector) const
 {
-	return _X * InVector._X + _Y * InVector._Y;
+	return X * InVector.X + Y * InVector.Y;
 }

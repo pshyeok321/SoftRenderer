@@ -50,11 +50,10 @@ private:
 	void Update2D(float InDeltaSeconds);
 	void Render2D();
 	void DrawGrid2D();
-	Transform _Transform;
-	int _Grid2DUnit = 10;
-	Vector2 _CurrentPosition = Vector2(10.f, 10.f);// = Vector2::Zero;
-	Matrix2x2 _DeltaTransform;
 
+	int _Grid2DUnit = 10;
+	Vector2 _StartPosition = Vector2::Zero;
+	Vector2 _EndPosition = Vector2(500.f, 0.f);
 	LinearColor _CurrentColor = LinearColor::Blue;
 
 private:
